@@ -1,0 +1,28 @@
+# Базы данных и их системные файлы
+Postgres-db/
+clickhouse/clickhouse_data/
+clickhouse/clickhouse_logs/
+
+# Системные файлы ОС
+.DS_Store
+Thumbs.db
+
+# Исключаем логи Airflow
+logs/
+
+# Исключаем файлы с паролями
+**/.env
+
+# Кэш питона
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Настройки редакторов кода (IDE)
+.vscode/
+.idea/
+
+# Локальные виртуальные окружения
+venv/
+.venv/
+env/

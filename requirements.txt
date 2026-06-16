@@ -1,0 +1,5 @@
+apache-airflow==2.8.1
+clickhouse-connect
+psycopg2-binary
+pytz
+faker
