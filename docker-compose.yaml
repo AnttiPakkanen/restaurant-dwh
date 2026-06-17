@@ -46,7 +46,7 @@ services:
       - airflow_data:/var/lib/postgresql/data
 
   airflow-webserver:
-    image: apache/airflow:2.8.1
+    image: apache/airflow:2.8.1-python3.10
     command: webserver
     depends_on:
       postgres-airflow:
@@ -72,7 +72,7 @@ services:
     restart: always
 
   airflow-scheduler:
-    image: apache/airflow:2.8.1
+    image: apache/airflow:2.8.1-python3.10
     command: scheduler
     depends_on:
       postgres-airflow:
@@ -85,7 +85,7 @@ services:
     restart: always
 
   airflow-init:
-    image: apache/airflow:2.8.1
+    image: apache/airflow:2.8.1-python3.10
     depends_on:
       postgres-airflow:
         condition: service_healthy
