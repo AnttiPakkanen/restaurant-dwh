@@ -25,7 +25,7 @@ def load_menu_in_silver (**kwargs):
                 WHERE sm.is_current = 1 AND (
                     sm.dish_name != COALESCE(bm.dish_name, 'Неизвестно') OR
                     sm.category != COALESCE(bm.category, 'Без категории') OR
-                    sm.price != COALESCE(bm.price, 0.00)
+                    sm.price != COALESCE(bm.price, CAST(0 AS Decimal(10, 2)))
                 )
             )
             SETTINGS mutations_sync = 1
@@ -49,7 +49,7 @@ def load_menu_in_silver (**kwargs):
 	            bm.item_id AS item_id,
 	            COALESCE(bm.category, 'Без категории') AS category,
 	            COALESCE(bm.dish_name, 'Неизвестно') AS dish_name,
-	            COALESCE(bm.price, 0.00) AS price,
+	            COALESCE(bm.price, CAST(0 AS Decimal(10, 2))) AS price,
 	            COALESCE(bm.popularity_weight, 0) AS popularity_weight,
                 toDate('{working_date}') AS valid_from,
                 toDate('2999-12-31') AS valid_to,
