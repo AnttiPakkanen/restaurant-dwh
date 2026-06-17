@@ -37,10 +37,10 @@ def load_receipts_silver (**kwargs):
             SELECT
                 receipt_id,
 	            receipt_time,
-	            COALESCE(staff_id, '00000000-0000-0000-0000-000000000000') as staff_id,
+	            COALESCE(staff_id, toUUID('00000000-0000-0000-0000-000000000000')) as staff_id,
 	            COALESCE(total_price, CAST(0 AS Decimal(10, 2))) as total_price,
 	            COALESCE(table_id, -1) as table_id,
-	            COALESCE(client_id, '00000000-0000-0000-0000-000000000000') as client_id,
+	            COALESCE(client_id, toUUID('00000000-0000-0000-0000-000000000000')) as client_id,
 	            COALESCE(discount_amount, CAST(0 AS Decimal(10, 2))) as discount_amount,
 	            COALESCE(final_price, CAST(0 AS Decimal(10, 2))) as final_price
             FROM rest_staging_area.receipts_bronze
