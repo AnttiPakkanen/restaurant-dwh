@@ -15,9 +15,12 @@ def load_receipts_silver (**kwargs):
     )
 
     try:
-        client.command(f"ALTER TABLE rest_dim_model.receipts_silver DROP PARTITION IF EXISTS '{working_date}'")
-        client.command(f"ALTER TABLE rest_dim_model.receipt_items_silver DROP PARTITION IF EXISTS '{working_date}'")
-        print(f"Партиция за {working_date} очищена.")
+        try:
+            client.command(f"ALTER TABLE rest_dim_model.receipts_silver DROP PARTITION '{working_date}'")
+            client.command(f"ALTER TABLE rest_dim_model.receipt_items_silver DROP PARTITION '{working_date}'")
+            print(f"Партиция за {working_date} очищена.")
+        except Exception:
+            print(f"Очищать за {working_date} нечего.")
 
         insert_receipts_data = f"""
             INSERT INTO rest_dim_model.receipts_silver
@@ -35,11 +38,11 @@ def load_receipts_silver (**kwargs):
                 receipt_id,
 	            receipt_time,
 	            COALESCE(staff_id, '00000000-0000-0000-0000-000000000000') as staff_id,
-	            COALESCE(total_price, 0.00) as total_price,
+	            COALESCE(total_price, CAST(0 AS Decimal(10, 2))) as total_price,
 	            COALESCE(table_id, -1) as table_id,
 	            COALESCE(client_id, '00000000-0000-0000-0000-000000000000') as client_id,
-	            COALESCE(discount_amount, 0.00) as discount_amount,
-	            COALESCE(final_price, 0.00) as final_price
+	            COALESCE(discount_amount, CAST(0 AS Decimal(10, 2))) as discount_amount,
+	            COALESCE(final_price, CAST(0 AS Decimal(10, 2))) as final_price
             FROM rest_staging_area.receipts_bronze
             WHERE toDate(receipt_time) = '{working_date}'
         """
@@ -60,8 +63,8 @@ def load_receipts_silver (**kwargs):
                 receipt_date,
                 item_id,
                 COALESCE(quantity, 1) as quantity,
-                COALESCE(price_per_item, 0.00) as price_per_item,
-                COALESCE(total_price, 0.00) as total_price
+                COALESCE(price_per_item, CAST(0 AS Decimal(10, 2))) as price_per_item,
+                COALESCE(total_price, CAST(0 AS Decimal(10, 2))) as total_price
             FROM rest_staging_area.receipt_items_bronze
             WHERE receipt_date = '{working_date}'
         """
