@@ -51,7 +51,7 @@ def daily_receipts_generator(**kwargs):
                 'Bronze': 0.05
             }
 
-            daily_receipts_count = random.randint(30, 60)
+            daily_receipts_count = random.randint(30, 70)
             receipts_batch = []
             items_batch = []
 
@@ -78,8 +78,8 @@ def daily_receipts_generator(**kwargs):
                 staff_id = random.choice(staff_ids)
                 receipt_total_price = 0
 
-                num_items_in_receipt = random.randint(1, 5)
-                chosen_dishes = random.choices(menu_items, weights=weights, k=num_items_in_receipt)
+                num_items_in_receipt = random.randint(1, 9)
+                chosen_dishes = list(set(random.choices(menu_items, weights=weights, k=num_items_in_receipt)))
                 temp_items_basket = []
 
                 for dish_id, dish_price, _ in chosen_dishes:
