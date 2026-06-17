@@ -15,9 +15,13 @@ def load_receipts_bronze (**kwargs):
     )
     
     try:
-        client.command(f"ALTER TABLE rest_staging_area.receipts_bronze DROP PARTITION IF EXISTS '{working_date}'")
-        client.command(f"ALTER TABLE rest_staging_area.receipt_items_bronze DROP PARTITION IF EXISTS '{working_date}'")
-        print(f"Партиция за {working_date} очищена.")
+        try:
+            client.command(f"ALTER TABLE rest_staging_area.receipts_bronze DROP PARTITION '{working_date}'")
+            client.command(f"ALTER TABLE rest_staging_area.receipt_items_bronze DROP PARTITION '{working_date}'")
+            print(f"Партиция за {working_date} очищена.")
+        except Exception:
+            print(f"Очищать за {working_date} нечего.")
+
 
         insert_receipts_data = f"""
             INSERT INTO rest_staging_area.receipts_bronze
