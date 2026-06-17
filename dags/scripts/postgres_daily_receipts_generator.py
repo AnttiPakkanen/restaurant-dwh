@@ -32,7 +32,7 @@ def daily_receipts_generator(**kwargs):
 
             print("Старые данные удалены.")
 
-            cursor.execute("SELECT staff_id FROM staff WHERE staff_position IN ('Официант', 'Бармен');")
+            cursor.execute("SELECT staff_id FROM staff WHERE LOWER(staff_position) IN ('официант', 'бармен');")
             staff_ids = [row[0] for row in cursor.fetchall()]
 
             cursor.execute("SELECT item_id, price, popularity_weight FROM menu;")
