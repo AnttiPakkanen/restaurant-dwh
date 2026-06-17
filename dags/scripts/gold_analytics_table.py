@@ -15,8 +15,11 @@ def load_analytics_table (**kwargs):
     )
 
     try:
-        client.command(f"ALTER TABLE rest_data_marts.analytics_table DROP PARTITION IF EXISTS '{working_date}'")
-        print(f"Партиция за {working_date} удалена.")
+        try:
+            client.command(f"ALTER TABLE rest_data_marts.analytics_table DROP PARTITION '{working_date}'")
+            print(f"Партиция за {working_date} удалена.")
+        except Exception:
+            print(f"Очищать за {working_date} нечего.")
 
         insert_items_data = f"""
             INSERT INTO rest_data_marts.analytics_table

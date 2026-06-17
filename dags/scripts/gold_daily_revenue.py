@@ -15,8 +15,11 @@ def daily_revenue (**kwargs):
     )
 
     try:
-        client.command(f"ALTER TABLE rest_data_marts.daily_revenue DROP PARTITION IF EXISTS '{working_date}'")
-        print(f"Партиция за {working_date} удалена.")
+        try:
+            client.command(f"ALTER TABLE rest_data_marts.daily_revenue DROP PARTITION '{working_date}'")
+            print(f"Партиция за {working_date} удалена.")
+        except Exception:
+            print(f"Очищать за {working_date} нечего.")
 
         insert_data = f"""
             INSERT INTO rest_data_marts.daily_revenue

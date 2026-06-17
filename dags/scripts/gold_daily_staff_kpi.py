@@ -15,8 +15,11 @@ def load_daily_staff_kpi (**kwargs):
     )
 
     try:
-        client.command(f"ALTER TABLE rest_data_marts.daily_staff_kpi DROP PARTITION IF EXISTS '{working_date}'")
-        print("Старая версия таблицы удалена.")
+        try:
+            client.command(f"ALTER TABLE rest_data_marts.daily_staff_kpi DROP PARTITION '{working_date}'")
+            print("Старая версия таблицы удалена.")
+        except Exception:
+            print(f"Очищать за {working_date} нечего.")
 
         insert_daily_staff_kpi = f"""
             INSERT INTO rest_data_marts.daily_staff_kpi
