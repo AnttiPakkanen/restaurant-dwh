@@ -11,7 +11,7 @@ def load_staff_in_bronze (**kwargs):
         port=connect_ch.port,
         username=connect_ch.login,
         password=connect_ch.password,
-        secure=True
+        secure=False
     )
 
     try:
