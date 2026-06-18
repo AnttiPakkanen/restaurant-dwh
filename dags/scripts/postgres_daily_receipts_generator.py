@@ -2,6 +2,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 import uuid
 import random
 import pytz
+from collections import Counter
 from datetime import datetime
 from psycopg2.extras import execute_values
 
@@ -79,12 +80,13 @@ def daily_receipts_generator(**kwargs):
                 receipt_total_price = 0
 
                 num_items_in_receipt = random.randint(1, 9)
-                chosen_dishes = list(set(random.choices(menu_items, weights=weights, k=num_items_in_receipt)))
+                chosen_dishes = random.choices(menu_items, weights=weights, k=num_items_in_receipt)
+                counted_dishes = Counter(chosen_dishes)
                 temp_items_basket = []
 
-                for dish_id, dish_price, _ in chosen_dishes:
-
-                    quantity = random.randint(1, 3)
+                for dish, quantity in counted_dishes.items():
+                    dish_id, dish_price, _ = dish
+                    
                     total_item_price = dish_price * quantity
                     receipt_total_price += total_item_price
 

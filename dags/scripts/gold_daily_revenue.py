@@ -50,7 +50,8 @@ def daily_revenue (**kwargs):
                 AND receipt_time <= '{working_date} 23:59:59'
         """
         silver_result = client.query(silver_check).named_results()
-        silver_revenue = silver_result[0]['silver_revenue'] if silver_result and silver_result[0]['silver_revenue'] else 0.0
+        silver_list = list(silver_result)
+        silver_revenue = silver_list[0]['silver_revenue'] if silver_list and silver_list[0]['silver_revenue'] else 0.0
 
         gold_check = f"""
             SELECT total_receipts, total_revenue 
@@ -58,9 +59,10 @@ def daily_revenue (**kwargs):
             WHERE report_date = '{working_date}'
         """
         gold_result = client.query(gold_check).named_results()
+        gold_list = list(gold_result)
 
-        if gold_result:
-            row = gold_result[0]
+        if gold_list:
+            row = gold_list[0]
             receipts_count = row['total_receipts']
             gold_revenue = row['total_revenue']
             print(f"Чеков: {receipts_count}. Выручка: {gold_revenue}")

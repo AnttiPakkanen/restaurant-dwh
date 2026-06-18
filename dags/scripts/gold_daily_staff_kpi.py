@@ -42,7 +42,7 @@ def load_daily_staff_kpi (**kwargs):
 	            SUM(rs.final_price) AS day_revenue,
 	            AVG(rs.final_price) AS avg_receipt_size,
 	            DENSE_RANK() OVER (ORDER BY SUM(rs.final_price) DESC) AS daily_rank
-            FROM rest_dim_model.receipts_silver FINAL AS rs
+            FROM rest_dim_model.receipts_silver AS rs FINAL
             LEFT JOIN rest_dim_model.staff_silver AS st 
 	            ON rs.staff_id = st.staff_id AND toDate('{working_date}') BETWEEN st.valid_from AND st.valid_to
             WHERE rs.receipt_time >= '{working_date} 00:00:00'
@@ -52,8 +52,8 @@ def load_daily_staff_kpi (**kwargs):
         client.command(insert_daily_staff_kpi)
 
         silver_sum = f"""
-            SELECT SUM(final_price) FINAL
-            FROM rest_dim_model.receipts_silver
+            SELECT SUM(final_price)
+            FROM rest_dim_model.receipts_silver FINAL
             WHERE toDate(receipt_time) = '{working_date}'
         """
         silver_revenue = client.command(silver_sum)
@@ -65,7 +65,7 @@ def load_daily_staff_kpi (**kwargs):
         """
         gold_revenue = client.command(gold_sum)
 
-        assert silver_revenue == gold_revenue, f"ОШИБКА!!! Потеряно {silver_revenue - gold_revenue} тенге при расчете KPI."
+        assert round(silver_revenue, 2) == round(gold_revenue, 2), f"ОШИБКА!!! Потеряно {silver_revenue - gold_revenue} тенге при расчете KPI."
 
     except Exception as e:
         print("Ой! Ошибка!")

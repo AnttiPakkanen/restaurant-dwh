@@ -65,7 +65,7 @@ def load_analytics_table (**kwargs):
         silver_receipts_count = client.command(f"""
             SELECT COUNT(*)
             FROM rest_dim_model.receipts_silver
-            WHERE receipt_date = '{working_date}'                        
+            WHERE toDate(receipt_time) = '{working_date}'                        
         """)
 
         gold_receipts_count = client.command(f"""
