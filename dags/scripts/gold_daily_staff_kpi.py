@@ -26,7 +26,7 @@ def load_daily_staff_kpi (**kwargs):
             (
 	            report_date,
 	            staff_id,
-                name,
+                staff_name,
 	            staff_position,
                 receipts_closed,
                 day_revenue,
@@ -36,7 +36,7 @@ def load_daily_staff_kpi (**kwargs):
             SELECT
                 toDate('{working_date}') as report_date,
                 st.staff_id,
-	            st.staff_name AS name,
+	            st.staff_name AS staff_name,
 	            st.staff_position AS staff_position,
 	            COUNT(rs.receipt_id) AS receipts_closed,
 	            SUM(rs.final_price) AS day_revenue,
