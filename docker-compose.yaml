@@ -24,8 +24,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "127.0.0.1:8123:8123"
-      - "127.0.0.1:9000:9000"
+      - "8123:8123"
+      - "9000:9000"
     volumes:
       - ch_data:/var/lib/clickhouse
       - ./init_clickhouse:/docker-entrypoint-initdb.d/
