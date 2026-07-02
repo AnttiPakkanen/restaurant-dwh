@@ -25,7 +25,8 @@ def load_menu_in_silver (**kwargs):
                 WHERE sm.is_current = 1 AND (
                     sm.dish_name != COALESCE(bm.dish_name, 'Неизвестно') OR
                     sm.category != COALESCE(bm.category, 'Без категории') OR
-                    sm.price != COALESCE(bm.price, CAST(0 AS Decimal(10, 2)))
+                    sm.price != COALESCE(bm.price, CAST(0 AS Decimal(10, 2))) OR
+                    sm.popularity_weight != COALESCE(bm.popularity_weight, 0)
                 )
             )
             SETTINGS mutations_sync = 1
@@ -55,9 +56,8 @@ def load_menu_in_silver (**kwargs):
                 toDate('2999-12-31') AS valid_to,
                 1 AS is_current
             FROM rest_staging_area.menu_bronze AS bm
-            LEFT JOIN rest_dim_model.menu_silver AS sm
+            LEFT ANTI JOIN rest_dim_model.menu_silver AS sm
                 ON bm.item_id = sm.item_id AND sm.is_current = 1
-            WHERE sm.item_id IS NULL
         """
         client.command(insert_menu_data)
 
