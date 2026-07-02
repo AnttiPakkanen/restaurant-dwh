@@ -50,9 +50,8 @@ def load_staff_in_silver (**kwargs):
                 toDate('2999-12-31') AS valid_to,
                 1 AS is_current
             FROM rest_staging_area.staff_bronze AS bst
-            LEFT JOIN rest_dim_model.staff_silver AS sst
+            LEFT ANTI JOIN rest_dim_model.staff_silver AS sst
                 ON bst.staff_id = sst.staff_id AND sst.is_current = 1
-            WHERE sst.staff_id IS NULL
         """
         client.command(insert_staff_data)
 
