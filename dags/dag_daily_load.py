@@ -83,8 +83,6 @@ with DAG(
     bronze_receipts_task >> silver_receipts_task
     bronze_staff_task >> silver_staff_task
     bronze_menu_task >> silver_menu_task
-    silver_tasks = [silver_receipts_task, silver_staff_task, silver_menu_task]
-    gold_tasks = [gold_revenue_task, gold_staff_kpi_task, gold_analytics_table_task]
-    
-    for silver_task in silver_tasks:
-        silver_task >> gold_tasks
+    [silver_receipts_task, silver_menu_task] >> gold_revenue_task
+    [silver_receipts_task, silver_staff_task] >> gold_staff_kpi_task
+    [silver_receipts_task, silver_staff_task, silver_menu_task] >> gold_analytics_table_task
