@@ -58,6 +58,8 @@ services:
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
       _PIP_ADDITIONAL_REQUIREMENTS: psycopg2-binary faker pytz clickhouse-connect
+      AIRFLOW_CONN_POSTGRES_CLOUD: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-db:5432/${POSTGRES_DB}
+      AIRFLOW_CONN_CLICKHOUSE_CLOUD: http://${CLICKHOUSE_USER}:${CLICKHOUSE_PASSWORD}@clickhouse-db:8123
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
